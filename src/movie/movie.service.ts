@@ -4,6 +4,7 @@ import { Movie } from './movie.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class MovieService {
@@ -21,9 +22,11 @@ export class MovieService {
       return movie;
     }
 
-    const data: any  = await this.httpService
-      .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`)
+    const response = await firstValueFrom(
+      this.httpService.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`)
+    );
 
+    const data = response.data;
 
     if (data === 'False') {
       throw new NotFoundException(`Movie with title "${title}" not found`);
@@ -37,9 +40,10 @@ export class MovieService {
       director: data.Director,
       plot: data.Plot,
       poster: data.Poster,
+      imdbRating: data.imdbRating,
     });
 
     await this.movieRepository.save(newMovie);
-    return newMovie;
+    return data;
   }
 }

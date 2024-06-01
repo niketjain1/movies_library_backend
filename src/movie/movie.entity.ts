@@ -10,6 +10,9 @@ export class Movie {
   imdbID: string;
 
   @Column()
+  imdbRating: string;
+
+  @Column()
   title: string;
 
   @Column()
