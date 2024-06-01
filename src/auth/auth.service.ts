@@ -9,14 +9,15 @@ import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class AuthService {
-  
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
+  async signUp(
+    signUpDto: SignUpDto,
+  ): Promise<{ token: string; email: string; userName: string }> {
     const { userName, email, password } = signUpDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,10 +32,16 @@ export class AuthService {
 
     const token = this.jwtService.sign({ id: user.id });
 
-    return { token };
+    return {
+      token: token,
+      userName: user.userName,
+      email: user.email,
+    };
   }
 
-  async login(loginDto: LoginDto): Promise<{ token: string }> {
+  async login(
+    loginDto: LoginDto,
+  ): Promise<{ token: string; email: string; userName: string }> {
     const { email, password } = loginDto;
 
     const user = await this.usersRepository.findOne({
@@ -53,6 +60,6 @@ export class AuthService {
 
     const token = this.jwtService.sign({ id: user.id });
 
-    return { token };
+    return { token: token, email: user.email, userName: user.userName };
   }
 }
