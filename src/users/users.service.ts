@@ -1,23 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
-import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from './dto/users.dto';
 
-@Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
 
-  async findOne(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ where: { email } });
+  async getAllUsers() {
+    const users = this.usersRepository.find();
+    return users;
   }
 
-  async create(email: string, password: string): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = this.usersRepository.create({ email, password: hashedPassword });
-    return this.usersRepository.save(user);
+  async getUserById(id: number) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException('Could not find the user');
+  }
+
+  async createUser(createUserDto: CreateUserDto) {
+    const newUser = await this.usersRepository.create(createUserDto);
+    await this.usersRepository.save({
+      name: createUserDto.name,
+      email: createUserDto.email,
+      password: createUserDto.password,
+    });
+    return newUser;
+  }
+
+  async deleteById(id: number) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      return null;
+    }
+
+    await this.usersRepository.remove(user);
+    return user;
   }
 }
