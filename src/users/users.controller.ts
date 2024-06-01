@@ -9,12 +9,14 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async getAllUsers(): Promise<User[]> {
     const users = await this.usersService.getAllUsers();
     return users;
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   async getUserById(@Param('id') id: string): Promise<User> {
     const user = await this.usersService.getUserById(Number(id));
     return user;
@@ -28,6 +30,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async deleteById(@Param('id') id: string): Promise<User> {
     const user = this.usersService.deleteById(Number(id));
     return user;
