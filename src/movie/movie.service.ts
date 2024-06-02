@@ -18,12 +18,15 @@ export class MovieService {
     const movie = await this.movieRepository.findOne({
       where: { title },
     });
+
     if (movie) {
       return movie;
     }
 
     const response = await firstValueFrom(
-      this.httpService.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`)
+      this.httpService.get(
+        `http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`,
+      ),
     );
 
     const data = response.data;
@@ -44,6 +47,6 @@ export class MovieService {
     });
 
     await this.movieRepository.save(newMovie);
-    return data;
+    return newMovie;
   }
 }
