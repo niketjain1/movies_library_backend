@@ -49,9 +49,7 @@ export class AuthService {
     };
   }
 
-  async login(
-    loginDto: LoginDto,
-  ): Promise<{
+  async login(loginDto: LoginDto): Promise<{
     token: string;
     email: string;
     userName: string;
