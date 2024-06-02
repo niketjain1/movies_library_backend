@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -19,6 +23,12 @@ export class AuthService {
     signUpDto: SignUpDto,
   ): Promise<{ token: string; email: string; userName: string }> {
     const { userName, email, password } = signUpDto;
+
+    if (userName.length === 0 || email.length === 0 || password.length === 0) {
+      throw new BadGatewayException(
+        'The userName, email or password field cannot be empty',
+      );
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -41,7 +51,12 @@ export class AuthService {
 
   async login(
     loginDto: LoginDto,
-  ): Promise<{ token: string; email: string; userName: string }> {
+  ): Promise<{
+    token: string;
+    email: string;
+    userName: string;
+    userId: number;
+  }> {
     const { email, password } = loginDto;
 
     const user = await this.usersRepository.findOne({
@@ -60,6 +75,11 @@ export class AuthService {
 
     const token = this.jwtService.sign({ id: user.id });
 
-    return { token: token, email: user.email, userName: user.userName };
+    return {
+      token: token,
+      email: user.email,
+      userName: user.userName,
+      userId: user.id,
+    };
   }
 }
