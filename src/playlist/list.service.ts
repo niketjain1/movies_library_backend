@@ -31,10 +31,11 @@ export class ListService {
   }
 
   async addMovieToList(
-    user: User,
+    userId: number,
     listId: number,
     movieTitle: string,
   ): Promise<List> {
+    const user = await this.usersService.getUserById(userId);
     const list = await this.listRepository.findOne({
       where: { id: listId, user },
       relations: ['movies'],

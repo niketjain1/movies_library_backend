@@ -29,10 +29,9 @@ export class ListController {
   async addMovieToList(
     @Param('id') id: number,
     @Body('title') title: string,
-    @Req() req: any,
+    @Body('userId') userId: number,
   ) {
-    const user: User = req.user;
-    return this.listService.addMovieToList(user, id, title);
+    return this.listService.addMovieToList(userId, id, title);
   }
 
   @Get()
