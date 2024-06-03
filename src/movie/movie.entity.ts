@@ -6,7 +6,7 @@ export class Movie {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   imdbID: string;
 
   @Column()
