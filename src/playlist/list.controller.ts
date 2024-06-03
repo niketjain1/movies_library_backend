@@ -9,14 +9,14 @@ import {
 } from '@nestjs/common';
 import { ListService } from './list.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/users/users.entity';
+import { List } from './list.enitity';
 
 @Controller('list')
-@UseGuards(AuthGuard('jwt'))
 export class ListController {
   constructor(private listService: ListService) {}
 
   @Post('create')
+  @UseGuards(AuthGuard('jwt'))
   async createList(
     @Body('name') name: string,
     @Body('isPublic') isPublic: boolean,
@@ -26,6 +26,7 @@ export class ListController {
   }
 
   @Post(':id/movies')
+  @UseGuards(AuthGuard('jwt'))
   async addMovieToList(
     @Param('id') id: number,
     @Body('title') title: string,
@@ -42,5 +43,10 @@ export class ListController {
   @Get(':id/public')
   async getPublicList(@Param('id') id: number) {
     return this.listService.getPublicList(id);
+  }
+
+  @Get(':id')
+  async getListById(@Param('id') id: number): Promise<List> {
+    return this.listService.getListById(id);
   }
 }
