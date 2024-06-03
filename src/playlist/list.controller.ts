@@ -29,10 +29,9 @@ export class ListController {
   @UseGuards(AuthGuard('jwt'))
   async addMovieToList(
     @Param('id') id: number,
-    @Body('title') title: string,
-    @Body('userId') userId: number,
+    @Body('imdbId') imdbId: string,
   ) {
-    return this.listService.addMovieToList(userId, id, title);
+    return this.listService.addMovieToList(id, imdbId);
   }
 
   @Get()

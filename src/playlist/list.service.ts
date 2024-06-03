@@ -30,14 +30,9 @@ export class ListService {
     return await this.listRepository.save(list);
   }
 
-  async addMovieToList(
-    userId: number,
-    listId: number,
-    movieTitle: string,
-  ): Promise<List> {
-    const user = await this.usersService.getUserById(userId);
+  async addMovieToList(listId: number, imdbId: string): Promise<List> {
     const list = await this.listRepository.findOne({
-      where: { id: listId, user },
+      where: { id: listId },
       relations: ['movies'],
     });
 
@@ -45,7 +40,7 @@ export class ListService {
       throw new NotFoundException(`List with id "${listId}" not found`);
     }
 
-    const movie = await this.movieService.findMovieByTitle(movieTitle);
+    const movie = await this.movieService.findMovieByImdbId(imdbId);
     list.movies.push(movie);
 
     return await this.listRepository.save(list);

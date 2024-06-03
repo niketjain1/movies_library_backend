@@ -49,4 +49,10 @@ export class MovieService {
     await this.movieRepository.save(newMovie);
     return newMovie;
   }
+
+  async findMovieByImdbId(imdbId: string) {
+    return await this.movieRepository.findOne({
+      where: { imdbID: imdbId },
+    });
+  }
 }
