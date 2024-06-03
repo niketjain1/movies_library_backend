@@ -34,7 +34,7 @@ export class ListController {
     return this.listService.addMovieToList(id, imdbId);
   }
 
-  @Get(':userId')
+  @Get(':userId/user')
   async getUserLists(@Param('userId') userId: number) {
     return this.listService.getListsByUser(userId);
   }
@@ -44,8 +44,8 @@ export class ListController {
     return this.listService.getPublicList(id);
   }
 
-  @Get(':id')
-  async getListById(@Param('id') id: number): Promise<List> {
-    return this.listService.getListById(id);
+  @Get(':listId')
+  async getListById(@Param('listId') listId: number) {
+    return this.listService.getListById(listId);
   }
 }
