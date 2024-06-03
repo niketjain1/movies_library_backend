@@ -71,4 +71,17 @@ export class ListService {
 
     return list;
   }
+
+  async getListById(id: number): Promise<List> {
+    const list = await this.listRepository.findOne({
+      where: { id: id },
+      relations: ['movies'],
+    });
+
+    if (!list) {
+      throw new NotFoundException(`Public list with id "${id}" not found`);
+    }
+
+    return list;
+  }
 }
