@@ -79,4 +79,9 @@ export class ListService {
 
     return list;
   }
+
+  async getAllLists() {
+    const lists = this.listRepository.find();
+    return lists;
+  }
 }

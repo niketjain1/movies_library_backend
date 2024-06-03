@@ -48,4 +48,9 @@ export class ListController {
   async getListById(@Param('listId') listId: number) {
     return this.listService.getListById(listId);
   }
+
+  @Get()
+  async getAllLists() {
+    return this.listService.getAllLists();
+  }
 }
