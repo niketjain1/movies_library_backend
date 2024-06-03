@@ -34,8 +34,8 @@ export class ListController {
     return this.listService.addMovieToList(id, imdbId);
   }
 
-  @Get()
-  async getUserLists(@Body('userId') userId: number) {
+  @Get(':userId')
+  async getUserLists(@Param('userId') userId: number) {
     return this.listService.getListsByUser(userId);
   }
 
