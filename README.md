@@ -1,73 +1,104 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Movies Library Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository contains the backend for the Movies Library application, built with NestJS.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Movies Library Backend](#movies-library-backend)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Running the Application](#running-the-application)
+    - [Environment Variables](#environment-variables)
+  - [API Endpoints](#api-endpoints)
+  - [Technologies Used](#technologies-used)
 
-## Installation
+  ## Features
 
-```bash
-$ yarn install
-```
+- User Authentication (Sign up, Login, Logout)
+- CRUD operations for movie lists
+- Public and private movie lists
+- Search functionality for movies
 
-## Running the app
+## Getting Started
 
-```bash
-# development
-$ yarn run start
+### Prerequisites
 
-# watch mode
-$ yarn run start:dev
+- Node.js (version 14.x or higher)
+- npm or yarn
+- A running MongoDB instance
 
-# production mode
-$ yarn run start:prod
-```
+### Installation
 
-## Test
+#### To test locally -
+1. Clone the repository:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+$ git clone https://github.com/niketjain1/movies_library_backend.git
+cd movies_library_backend
 ```
 
-## Support
+2. Install dependencies:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+$ npm install
+```
 
-## Stay in touch
+3. Set up environment variables
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Create a .env file in the root directory of the project and add the following environment variables:
 
-## License
+```env
 
-Nest is [MIT licensed](LICENSE).
+JWT_SECRET=jwt_secret
+JWT_EXPIRES=3d
+OMDB_API_KEY=API_key_from_the_omdb
+DB_HOST=your_local_host_address
+DB_PORT=5432
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+FRONTEND_URL=client_url_to_enable_cors
+```
+
+4. Start the server:
+
+```bash
+$ npm run start:dev
+```
+
+#### To test on prod -
+```bash
+hosted link = https://movies-library-backend-l2x6.onrender.com
+```
+### API Endpoints
+
+Here are the main API endpoints for the Movies Library Backend:
+
+- Auth
+
+  - POST /auth/signup - Register a new user
+  - POST /auth/login - Login a user
+
+- Movies
+
+  - POST /movies/search - Search a movie by title
+
+- Movie Lists
+
+- POST /list/create - Create a list
+- POST /list/:id/movies - Add movies to the list
+- GET /list/:userId/user - Fetch all the movies by the user
+- GET /list/:listId- Fetch list by listId
+- GET /list - Fetch all lists
+
+### Technologies Used
+
+- [NestJS](https://nestjs.com/) - A progressive Node.js framework
+- [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript
+- [MongoDB](https://www.mongodb.com/) - A NoSQL database
+- [Mongoose](https://mongoosejs.com/) - An ODM for MongoDB
+- [Passport](http://www.passportjs.org/) - Authentication middleware for Node.js
